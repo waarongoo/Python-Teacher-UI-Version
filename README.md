@@ -3,7 +3,7 @@
 [![Run on Repl.it](https://repl.it/badge/github/waarongoo/Python-Teacher-UI-Version)](https://repl.it/github/waarongoo/Python-Teacher-UI-Version)
 ### Version BETA 0.1.0
 
-## Packages needed for the project to work 
+## Packages needed for the project to fully work 
 ```python
 from tkinter import messagebox
 from tkinter import *
