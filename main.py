@@ -14,6 +14,7 @@ class App(tk):
     )
     if answer1 == 'print("Hello World")':
       tm.showinfo("Good Job!","Good Job!")
+      print("Hello World")
       def lesson2():
         tm.showinfo("",
             "Ok so for this next lesson we are gonna use something called turtle. What is turtle? It is like the animal turtle you may ask? No, its a python package for drawing. Is it slow? No its very fast depending on REPLs computer resources haha.\n\n\n"
@@ -32,16 +33,16 @@ class App(tk):
                 length = simpledialog.askstring("Turtle IDE","How far do you want to move forward?")
                 turtle.forward(int(length))
             if choice == "2":
-                length = simpledialog.askstring("How far do you want to move backwards?")
+                length = simpledialog.askstring("","How far do you want to move backwards?")
                 turtle.backward(int(length))
             if choice == "3":
-                length = simpledialog.askstring("How many degrees do you want to turn left?")
+                length = simpledialog.askstring("","How many degrees do you want to turn left?")
                 turtle.left(int(length))
             if choice == "4":
-                length = simpledialog.askstring("How many degrees do you want to turn right?")
+                length = simpledialog.askstring("","How many degrees do you want to turn right?")
                 turtle.right(int(length))
             if choice == "5":
-                tm.showinfo("Your have cleared your drawing!")
+                tm.showinfo("","Your have cleared your drawing!")
                 turtle.clear()
             if choice == "6":
                 go = False
