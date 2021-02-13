@@ -1,16 +1,18 @@
-# Python Teacher-BETA-0.1.0
+# Python Teacher UI Version-BETA-0.1.0
 
 [![Run on Repl.it](https://repl.it/badge/github/waarongoo/Python-Teacher-UI-Version)](https://repl.it/github/waarongoo/Python-Teacher-UI-Version)
 ### Version BETA 0.1.0
 
 ## Packages needed for the project to work 
 ```python
+from tkinter import messagebox
+from tkinter import *
+import tkinter.messagebox as tm
+import tkinter as tk
+from tkinter import simpledialog
 import turtle
-from termcolor import colored
-import sys
-import time
 ```
-Run Project here: https://Shorter.repl.co/pythonteacher
+
 ## Copyright/Legal Info
 # MIT License
 
