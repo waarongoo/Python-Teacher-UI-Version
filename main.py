@@ -46,7 +46,7 @@ class App(tk):
                 turtle.clear()
             if choice == "6":
                 go = False
-                tm.showinfo("","Did you have fun? If so great! Lets go to the next lesson")
+                tm.showinfo("","Did you have fun? If so great!")
                 
       lesson2()
   
