@@ -1,68 +1,181 @@
-from tkinter import messagebox
-from tkinter import *
-import tkinter.messagebox as tm
-import tkinter as tk
-from tkinter import simpledialog
-import turtle
-application_window = tk.Tk()
-class App(tk):
+from inspect import signature as s, isfunction as f
+from json import loads as parse, dumps as stringify
+import config
+# -- Configuration (Settings) -- #
+user_color = "white"
+console_color = "white"
+
+pointer = ">>>"
+pointer_color = "green"
 
 
-  def startlesson1():
-    answer1 = simpledialog.askstring("Lesson 1",
-        'Now lets learn how to print stuff in the console. What is the console? The console is the black box that tells you stuff. \nHow do I print stuff? Well to do that use this print("Hello World")\n. Here try it yourself.'
-    )
-    if answer1 == 'print("Hello World")':
-      tm.showinfo("Good Job!","Good Job!")
-      print("Hello World")
-      def lesson2():
-        tm.showinfo("",
-            "Ok so for this next lesson we are gonna use something called turtle. What is turtle? It is like the animal turtle you may ask? No, its a python package for drawing. Is it slow? No its very fast depending on REPLs computer resources haha.\n\n\n"
+# {} is the command given by the user
+class error:
+    syntax_error = "Error: '{}' is not a valid command."
+    name_error = "Error: '{}' is not defined."
+    type_error = "Error: wrong type for '{}'"
+    invalid_parameter_error = "Error: {required_params} required parameters required and {optional_params} optional parameters needed but {params_given} given."
+
+
+error_color = "red"
+
+do_help_command = True  # use the built-in help command?
+help_command = "help"
+
+version = "1.0.0"  # what is the version of your language?
+language_name = "awdevlang"
+author = "awdev"
+
+clear_command = ["clear", "clr"]  # you can have aliases to the command
+
+# == TO CONFIGURATE THE COMMANDS, GO TO CONFIG.PY == #
+
+# -- Compiler -- #
+# this is the compiler, don't touch unless you understand it
+
+
+colors = {
+    "white": "\033[0m",
+    "red": "\033[31m",
+    "green": "\033[32m",
+    "blue": "\033[34m",
+    "purple": "\033[35",
+    "cyan": "\033[36m",
+    "orange": "\033[33m"
+}
+
+
+def e(c):
+    exec('global i; i = %s' % c)
+    global i
+    return i
+
+
+try:
+    user_color = colors[user_color]
+    console_color = colors[console_color]
+    pointer_color = colors[pointer_color]
+    error_color = colors[error_color]
+except:
+    print("\033[31mInvalid colors in configuration.\033[0m")
+
+if do_help_command:
+    print(
+        "{} {} [{}] 2020 (c)\nType help or license for more information."
+        .format(language_name, version, author))
+else:
+    print(
+        "{} {} [{}] 2020 (c)\n\nType credits, or license for more information."
+        .format(language_name, version, author))
+
+help = '== Help ==\nFor help with a command, type help [command]'
+
+while True:
+    x = input(pointer_color + pointer + console_color + " ")
+    if x.startswith(help_command + " ") and do_help_command:
+        x = x.split(help_command + " ")[1]
+        try:
+            if f(e("config." + x)):
+                print("== Help | " + x + " ==")
+                h = []
+                prm = [0, 0]
+                co = 0
+                sig = s(e("config." + x.split(" ")[0]))
+                for key in list(dict(sig.parameters).keys()):
+                    if str(dict(sig.parameters)[key]).startswith(
+                            "{}=".format(key)):
+                        prm[1] += 1
+                    else:
+                        prm[0] += 1
+                for i in str(s(e("config." + x)))[1:-1].split(", "):
+                    if co <= prm[0]:
+                        h.append("[" + i.split("=")[0] + "]")
+                    else:
+                        h.append("(" + i.split("=")[0] + ")")
+                    co += 1
+                print("Usage: " + x + " " + ' '.join(h) + "\nParams: " +
+                      " | ".join(str(s(e("config." + x)))[1:-1].split(",")))
+        except:
+            print(error_color + error.syntax_error.format(x))
+    elif x == help_command:
+        print("""
+        == Help Manual ==\n
+        startpython Starts the Python Teacher
+        """)
+    elif x == "license":
+        print("""Copyright (c) 2020 awdev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.""".format(author))
+    elif x == "credits":
+        print(
+            "awdev for making this program"
         )
-        tm.showinfo("",
-            "In this package, we can do many different things with the 'turtle'. Now choose what do you want to do with the turtle.\n\n"
-        )
+    elif x in clear_command:
+        print("\033c", end="", flush=True)
+        if do_help_command:
+            print(
+                "{} {} [{}] 2020 (c)\nTemplate by @awdev, Repl.it - https://repl.it/@awdev\nType help, or license for more information."
+                .format(language_name, version, author))
+        else:
+            print(
+                "{} {} [{}] 2020 (c)\nTemplate by @awdev, Repl.it - https://repl.it/@awdev\nType credits, or license for more information."
+                .format(language_name, version, author))
+    elif x.strip() != "":
+        y = x.split(" ")
+        c = x.split(" ")[0]
+        del (y[0])
+        y = ','.join(y)
+        sig = ''
+        prm = [0, 0]
+        try:
+            if f(e("config." + c)):
+                sig = s(e("config." + x.split(" ")[0]))
+                for key in list(dict(sig.parameters).keys()):
+                    if str(dict(sig.parameters)[key]).startswith(
+                            "{}=".format(key)):
+                        prm[1] += 1
+                    else:
+                        prm[0] += 1
+                if (len(y.split(",")) == prm[0] or y.split(",")
+                        == ['']) or len(y.split(",")) <= (prm[0] + prm[1]):
+                    try:
+                        if not y == "":
+                            e("config." + c + "(" + y + ")")
+                        else:
+                            try:
+                                e("config." + c + "()")
+                            except:
+                                print("<[function] {}>".format(c))
+                    except TypeError:
+                        print(error_color + error.type_error.format(x))
+                    except NameError:
+                        print(error_color + error.name_error.format(x))
+                else:
+                    print(error_color + error.invalid_parameter_error.format(
+                        required_params=prm[0],
+                        optional_params=prm[1],
+                        params_given=len(y.split(","))))
 
-        tm.showinfo("","Welcome to the Python Turtle IDE\n\n")
-        go = True
-        while go == True:
-            choice = simpledialog.askstring("",
-                "                  Enter: \n 1. To move the turtle forward,\n 2. To move backwards,\n 3. To turn left,\n 4. To turn right,\n 5. To clear your drawing,\n 6. To stop drawing\n"
-            )
-            if choice == "1":
-                length = simpledialog.askstring("Turtle IDE","How far do you want to move forward?")
-                turtle.forward(int(length))
-            if choice == "2":
-                length = simpledialog.askstring("","How far do you want to move backwards?")
-                turtle.backward(int(length))
-            if choice == "3":
-                length = simpledialog.askstring("","How many degrees do you want to turn left?")
-                turtle.left(int(length))
-            if choice == "4":
-                length = simpledialog.askstring("","How many degrees do you want to turn right?")
-                turtle.right(int(length))
-            if choice == "5":
-                tm.showinfo("","Your have cleared your drawing!")
-                turtle.clear()
-            if choice == "6":
-                go = False
-                tm.showinfo("","Did you have fun? If so great!")
-                
-      lesson2()
-  
-        
+            else:
+                raise AttributeError
+        except (AttributeError, SyntaxError):
+            print(error_color + error.syntax_error.format(x))
 
-
-  tm.showinfo("Hello!", "I am Robert your python teacher!")
-  answer = simpledialog.askstring("Input", "What is your first name?",parent=application_window)
-  if answer is not None:
-    print("Your first name is ", answer)
-    tm.showinfo("Hello!","Nice to meet you "  + answer)
-    tm.showinfo("Start","Lets start shall we?")
-    startlesson1()
-
-window = App()
-#window.protocol("WM_DELETE_WINDOW", window.check_quit)
-window.resizable(False, False)
-window.title("Python Teacher")
-
+# this is the compiler, don't touch unless you understand it
+# -- Compiler -- #
