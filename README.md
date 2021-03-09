@@ -11,6 +11,7 @@ import tkinter.messagebox as tm
 import tkinter as tk
 from tkinter import simpledialog
 import turtle
+from tkinter.ttk import *
 ```
 
 ## Copyright/Legal Info

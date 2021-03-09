@@ -4,6 +4,7 @@ import tkinter.messagebox as tm
 import tkinter as tk
 from tkinter import simpledialog
 import turtle
+from tkinter.ttk import *
 application_window = tk.Tk()
 
 
@@ -72,3 +73,6 @@ window = App()
 window.protocol("WM_DELETE_WINDOW", window.check_quit)
 window.resizable(True, True)
 window.title("Python Teacher")
+program = Tk()
+photo = PhotoImage(file = "logo.png")
+program.iconphoto(False, photo)
