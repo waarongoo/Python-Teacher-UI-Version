@@ -5,6 +5,8 @@ import tkinter as tk
 from tkinter import simpledialog
 import turtle
 from tkinter.ttk import *
+
+
 application_window = tk.Tk()
 
 
@@ -60,9 +62,9 @@ def startlesson1():
 
 
 tm.showinfo("Hello!", "I am Robert your python teacher!")
-answer = simpledialog.askstring("Input",
-                                "What is your first name?",
-                                parent=application_window)
+answer = simpledialog.askstring("Input","What is your first name?",parent=application_window)
+                                
+
 if answer is not None:
     print("Your first name is ", answer)
     tm.showinfo("Hello!", "Nice to meet you " + answer)
@@ -75,4 +77,5 @@ window.resizable(True, True)
 window.title("Python Teacher")
 program = Tk()
 photo = PhotoImage(file = "logo.png")
+program.iconphoto(False, p1)
 program.iconphoto(False, photo)
